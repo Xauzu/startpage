@@ -12,7 +12,6 @@ messageDivId = "message"
 dateDivId = "date"
 dateId = "date-text"
 weatherId = "weather-text"
-lineId = "line"
 messageId = "message-text"
 timeZ = undefined
 otherContentId = "other-content"
@@ -274,16 +273,14 @@ function parseAndCreate(jsonData) {
     if (jsonData["disableMessage"])
         document.getElementById(messageDivId).style.display = "none"
     if (jsonData["disableDate"]) {
-        // Hide the date and the line
+        // Hide the date
         document.getElementById(dateId).style.display = "none"
-        document.getElementById(lineId).style.display = "none"
     }
     else
         updateTimeHook()
     if (jsonData["disableWeather"]){
-        // Hide the date and the line
+        // Hide the date
         document.getElementById(weatherId).style.display = "none"
-        document.getElementById(lineId).style.display = "none"
     }
     else {
         appId = jsonData["apikey"]
@@ -318,9 +315,6 @@ function parseAndCreate(jsonData) {
         }
         if (styleData["dateColor"]) {
             document.getElementById(dateId).style.color = styleData["dateColor"]
-        }
-        if (styleData["lineColor"]) {
-            document.getElementById(lineId).style.color = styleData["lineColor"]
         }
         if (styleData["weatherColor"]) {
             document.getElementById(weatherId).style.color = styleData["weatherColor"]
