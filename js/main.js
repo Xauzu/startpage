@@ -181,7 +181,7 @@ function updateWeather(weatherConfig) {
      * the unit.
      */
     userLocation = weatherConfig["location"].replace(/\ /g, ",")
-    
+
     fetchLoc = `http://api.openweathermap.org/geo/1.0/direct?q=${userLocation}&limit=1&appid=${appId}`
     fetch(fetchLoc)
         .then(response => {return response.json()})
@@ -397,16 +397,17 @@ function createSqr(sqrData, index, globalNewTabEnabled) {
         }
 
         a = document.createElement("a")
-        attrHref = document.createAttribute("href")
-        attrHref.value = aHref
+        if (aHref != "" && aHref != undefined){
+            attrHref = document.createAttribute("href")
+            attrHref.value = aHref
+            a.setAttributeNode(attrHref)
+        }
 
         if (isNewTab) {
             attrTarget = document.createAttribute("target")
             attrTarget.value = "_blank"
             a.setAttributeNode(attrTarget)
         }
-        
-        a.setAttributeNode(attrHref)
 
         a.textContent = aName
 
