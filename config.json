@@ -48,7 +48,9 @@
   "timeZone": "America/Los_Angeles",
   "weatherConf": {
     "location": "Pune India",
-    "unit": "cel"
+    "unit": "cel",
+    "multiConditions": false,
+    "humidity": false
   },
   "settingsIcon": false,
   "style": {
