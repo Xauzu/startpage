@@ -198,7 +198,10 @@ function updateWeather(weatherConfig) {
                 .then(response => {return response.json()})
                 .then(jsonData => {
                     temp = Math.floor(jsonData["main"]["temp"])
-                    weatherType = jsonData["weather"][0]["main"]
+                    weatherData = jsonData["weather"][0]["description"]
+
+                    // Main weather
+                    weatherType = weatherData.charAt(0).toUpperCase() + weatherData.slice(1);
 
                     temp = !unit.includes("cel") ?
                         getFahrenheit(temp) + "&deg;F" : temp + "&deg;C"
