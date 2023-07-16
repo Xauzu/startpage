@@ -18,7 +18,7 @@ timeZ = undefined
 otherContentId = "other-content"
 userName = ""
 disable24Hour = false;
-appId = "fd2c04ed7f9802656bd2cc23bddc7ad9"
+appId = ""
 apiUrl = "http://api.openweathermap.org/data/2.5/weather"
 bgClassContainer = [
     "media",
@@ -181,22 +181,44 @@ function updateWeather(weatherConfig) {
      * the unit.
      */
     userLocation = weatherConfig["location"].replace(/\ /g, ",")
-    passedUnit = weatherConfig["unit"]
-    unit = validWeatherUnit.includes(passedUnit.substring(0, 3)) ?
-        passedUnit : "cel"
-
-    fetchUrl = apiUrl + `?q=${userLocation}&appid=${appId}&units=metric`
-
-    fetch(fetchUrl)
+    
+    fetchLoc = `http://api.openweathermap.org/geo/1.0/direct?q=${userLocation}&limit=1&appid=${appId}`
+    fetch(fetchLoc)
         .then(response => {return response.json()})
         .then(jsonData => {
-            temp = Math.floor(jsonData["main"]["temp"])
-            weatherType = jsonData["weather"][0]["main"]
+            lat = jsonData[0]["lat"]
+            lon = jsonData[0]["lon"]
+            
+            passedUnit = weatherConfig["unit"]
+            unit = validWeatherUnit.includes(passedUnit.substring(0, 3)) ?
+                passedUnit : "cel"
 
-            temp = !unit.includes("cel") ?
-                getFahrenheit(temp) + "&deg;F" : temp + "&deg;C"
-            weatherText = temp + ", " + indexUppercase(weatherType)
-            document.getElementById(weatherId).innerHTML = weatherText
+            fetchUrl = apiUrl + `?lat=${lat}&lon=${lon}&appid=${appId}&units=metric`
+
+            fetch(fetchUrl)
+                .then(response => {return response.json()})
+                .then(jsonData => {
+                    temp = Math.floor(jsonData["main"]["temp"])
+                    weatherType = jsonData["weather"][0]["main"]
+
+                    temp = !unit.includes("cel") ?
+                        getFahrenheit(temp) + "&deg;F" : temp + "&deg;C"
+                    humidity = jsonData["main"]["humidity"];
+                    weatherText = temp + " H:" + humidity + "%, " + indexUppercase(weatherType)
+
+                    id = jsonData["id"]
+
+                    a = document.createElement("a")
+                    attrHref = document.createAttribute("href")
+                    attrHref.value = `https://openweathermap.org/city/${id}`
+                    
+                    a.setAttributeNode(attrHref)
+            
+                    a.innerHTML = weatherText
+
+                    document.getElementById(weatherId).innerHTML = ""
+                    document.querySelector('#weather-text').appendChild(a)
+                })
         })
 }
 
@@ -256,8 +278,10 @@ function parseAndCreate(jsonData) {
         document.getElementById(weatherId).style.display = "none"
         document.getElementById(lineId).style.display = "none"
     }
-    else
+    else {
+        appId = jsonData["apikey"]
         updateWeather(jsonData["weatherConf"])
+    }
     if (jsonData["disableSearchBar"])
         document.getElementById(searchBarDivId).style.display = "none"
     else
