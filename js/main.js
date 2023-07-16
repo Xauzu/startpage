@@ -382,7 +382,7 @@ function createSqr(sqrData, index, globalNewTabEnabled) {
 
     links.forEach(element => {
         aName = element["name"]
-        aHref = element["url"]
+        aHref = element["url"] ? element["url"] : ""
         
         // Idea is to give preference to
         // link specific newTab field over the global
