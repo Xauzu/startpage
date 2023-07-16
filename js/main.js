@@ -202,11 +202,12 @@ function updateWeather(weatherConfig) {
 
                     // Main weather
                     weatherType = weatherData.charAt(0).toUpperCase() + weatherData.slice(1);
+                    weatherCount = jsonData["weather"].length
 
                     temp = !unit.includes("cel") ?
                         getFahrenheit(temp) + "&deg;F" : temp + "&deg;C"
                     humidity = jsonData["main"]["humidity"];
-                    weatherText = temp + " H:" + humidity + "%, " + indexUppercase(weatherType)
+                    weatherText = temp + " H:" + humidity + "%, " + indexUppercase(weatherType) + "<sup>[" + weatherCount + "]</sup>"
 
                     id = jsonData["id"]
 
@@ -215,6 +216,19 @@ function updateWeather(weatherConfig) {
                     attrHref.value = `https://openweathermap.org/city/${id}`
                     
                     a.setAttributeNode(attrHref)
+
+                    if (weatherCount > 1) {
+                        attrTitle = document.createAttribute("title")
+                        newTitle = ""
+                        jsonData["weather"].forEach(element => {
+                            if (newTitle === "")
+                                newTitle += element["description"].charAt(0).toUpperCase() + element["description"].slice(1)
+                            else
+                                newTitle += "\n" + element["description"].charAt(0).toUpperCase() + element["description"].slice(1) 
+                        });
+                        attrTitle.value = newTitle
+                        a.setAttributeNode(attrTitle)
+                    }
             
                     a.innerHTML = weatherText
 
