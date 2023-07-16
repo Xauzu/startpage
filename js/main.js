@@ -218,6 +218,13 @@ function updateWeather(weatherConfig) {
 
                     document.getElementById(weatherId).innerHTML = ""
                     document.querySelector('#weather-text').appendChild(a)
+
+                    iconCode = jsonData["weather"][0]["icon"]
+                    iconLink = `https://openweathermap.org/img/wn/${iconCode}@4x.png`;
+
+                    img = document.createElement("img");
+                    img.src = iconLink
+                    document.querySelector("#weather-icon").appendChild(img)
                 })
         })
 }
