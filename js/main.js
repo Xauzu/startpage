@@ -207,7 +207,7 @@ function updateWeather(weatherConfig) {
                     temp = !unit.includes("cel") ?
                         getFahrenheit(temp) + "&deg;F" : temp + "&deg;C"
                     humidity = jsonData["main"]["humidity"];
-                    weatherText = temp + " H:" + humidity + "%, " + indexUppercase(weatherType) + "<sup>[" + weatherCount + "]</sup>"
+                    weatherText = temp + " H:" + humidity + "%, " + indexUppercase(weatherType)
 
                     id = jsonData["id"]
 
@@ -217,7 +217,9 @@ function updateWeather(weatherConfig) {
                     
                     a.setAttributeNode(attrHref)
 
-                    if (weatherCount > 1) {
+                    if (weatherConfig["multiConditions"] && weatherCount > 1) {
+                        weatherText += "<sup>[" + weatherCount + "]</sup>";
+
                         attrTitle = document.createAttribute("title")
                         newTitle = ""
                         jsonData["weather"].forEach(element => {
@@ -296,7 +298,7 @@ function parseAndCreate(jsonData) {
     else
         updateTimeHook()
     if (jsonData["disableWeather"]){
-        // Hide the date
+        // Hide the weather
         document.getElementById(weatherId).style.display = "none"
     }
     else {
