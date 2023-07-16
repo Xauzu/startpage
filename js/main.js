@@ -207,7 +207,10 @@ function updateWeather(weatherConfig) {
                     temp = !unit.includes("cel") ?
                         getFahrenheit(temp) + "&deg;F" : temp + "&deg;C"
                     humidity = jsonData["main"]["humidity"];
-                    weatherText = temp + " H:" + humidity + "%, " + indexUppercase(weatherType)
+                    weatherText = temp;
+                    if (weatherConfig["humidity"]) weatherText += " H:" + humidity + "%"
+                    
+                    weatherText += ", " + indexUppercase(weatherType)
 
                     id = jsonData["id"]
 
