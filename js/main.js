@@ -18,7 +18,7 @@ timeZ = undefined
 otherContentId = "other-content"
 userName = ""
 disable24Hour = false;
-appId = "fd2c04ed7f9802656bd2cc23bddc7ad9"
+appId = ""
 apiUrl = "http://api.openweathermap.org/data/2.5/weather"
 bgClassContainer = [
     "media",
@@ -256,8 +256,10 @@ function parseAndCreate(jsonData) {
         document.getElementById(weatherId).style.display = "none"
         document.getElementById(lineId).style.display = "none"
     }
-    else
+    else {
+        appId = jsonData["apikey"]
         updateWeather(jsonData["weatherConf"])
+    }
     if (jsonData["disableSearchBar"])
         document.getElementById(searchBarDivId).style.display = "none"
     else
